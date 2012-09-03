@@ -6,7 +6,7 @@ module MCollective
       def initialize
         @meta = {:license => "Apache 2",
           :author => "alcy",
-          :url => "http://github.com/alcy"}
+          :url => "http://github.com/alcy/mcollective-es"}
 
         require 'tire'
 
