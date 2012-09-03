@@ -6,3 +6,4 @@ Config params:
 * plugin.registration.esindex (= hosts)
 * plugin.registration.estype (= document)
 * plugin.registration.docttl (=300)
+* plugin.registration.ttldisabled (= false)
