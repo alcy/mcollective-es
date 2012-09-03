@@ -19,9 +19,10 @@ module MCollective
         @esindex = @config.pluginconf["registration.esindex"] || "hosts"
         @estype = @config.pluginconf["registration.estype"] || "document"
         @docttl = @config.pluginconf["registration.docttl"] || "300s"
+        @ttldisabled = @config.pluginconf["registration.ttldisabled"] || "false"
 
         Tire.configure do 
-          url @eshost:@esport
+          url "#{@eshost}:#{@esport}"
         end
 
       end
@@ -35,7 +36,7 @@ module MCollective
               :document => {
                 :_ttl => { :enabled => true, :default => @docttl }
               }
-            } 
+            } unless @ttldisabled == "false" 
             store :data => req,
                   :id => msg[:senderid],
                   :type => @estype
