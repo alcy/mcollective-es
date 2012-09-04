@@ -18,26 +18,23 @@ module MCollective
         @esport = @config.pluginconf["registration.esport"] || "9200"
         @esindex = @config.pluginconf["registration.esindex"] || "hosts"
         @estype = @config.pluginconf["registration.estype"] || "document"
-        @docttl = @config.pluginconf["registration.docttl"] || "300s"
+        @docttl = @config.pluginconf["registration.docttl"] || "10s"
         @ttldisabled = @config.pluginconf["registration.ttldisabled"] || "false"
 
-        Tire.configure do 
-          url "#{@eshost}:#{@esport}"
-        end
-
+        Tire::Configuration.url "#{@eshost}:#{@esport}" 
       end
 
       def handlemsg(msg, connection)
         req = msg[:body]
         
         begin
-          Tire.index @esindex do
-            create :mappings => { 
+          Tire.index(@esindex) do |index|
+            index.create :mappings => { 
               :document => {
                 :_ttl => { :enabled => true, :default => @docttl }
               }
-            } unless @ttldisabled == "false" 
-            store :data => req,
+            } unless @ttldisabled == "true"
+            index.store :data => req,
                   :id => msg[:senderid],
                   :type => @estype
 
